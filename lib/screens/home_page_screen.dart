@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:users/screens/user_screen.dart';
 
 import '../providers/persons.dart';
 
@@ -13,8 +14,15 @@ class HomePageScreen extends ConsumerWidget {
       AsyncData(:final value) => ListView.builder(
           itemBuilder: (context, index) {
             final person = value[index];
-            return ListTile(
-              title: Text('${person.firstname} ${person.lastname}'),
+            return InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => UserScreen(person: person)));
+              },
+              child: ListTile(
+                leading: Hero(tag: person, child: const CircleAvatar()),
+                title: Text('${person.firstname} ${person.lastname}'),
+              ),
             );
           },
           itemCount: value.length,
