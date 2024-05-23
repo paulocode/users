@@ -32,7 +32,7 @@ class AddressMap extends StatelessWidget {
             );
           },
           child: Text(
-            'Address: ${_address.street} ${_address.streetName} St., Bldg No. ${_address.buildingNumber}, ${_address.city}, ${_address.country}',
+            '${_address.street} ${_address.streetName} St., Bldg No. ${_address.buildingNumber}, ${_address.city}, ${_address.country}',
           ),
         ),
       ],
