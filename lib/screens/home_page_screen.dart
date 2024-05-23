@@ -11,12 +11,13 @@ class HomePageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final personsAsync = ref.watch(personsProvider);
+    const loadingIndicator = Center(child: CircularProgressIndicator());
     final body = switch (personsAsync) {
       AsyncData(:final value, :final isLoading) => !isLoading
           ? UserList(value)
-          : const Center(child: CircularProgressIndicator()),
+          : loadingIndicator,
       AsyncError() => const Text('Oops, something unexpected happened'),
-      _ => const Center(child: CircularProgressIndicator()),
+      _ => loadingIndicator,
     };
     return Scaffold(
       appBar: AppBar(
