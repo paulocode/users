@@ -19,8 +19,8 @@ class RefreshFab extends ConsumerWidget {
           Icons.refresh,
           size: 70,
         ),
-        onPressed: () {
-          ref.invalidate(personsProvider);
+        onPressed: () async {
+          await ref.read(personsProvider.notifier).refresh();
         },
       ),
     );

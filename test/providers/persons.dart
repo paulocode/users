@@ -101,6 +101,18 @@ void main() {
 
     expect(persons.length, 4);
   });
+
+  test('refresh must clear previous', () async {
+    _setClientResponse(
+      client,
+      [Person(id: 0, firstname: 'juan', lastname: 'cruz')],
+    );
+    await container.read(personsProvider.future);
+    await container.read(personsProvider.notifier).refresh();
+
+    final persons = await container.read(personsProvider.future);
+
+    expect(persons.length, 1);});
 }
 
 void _setClientResponse(MockClient client, List<Person> data) {

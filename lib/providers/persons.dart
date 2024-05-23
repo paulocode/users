@@ -11,7 +11,6 @@ part 'persons.g.dart';
 
 @Riverpod(keepAlive: true)
 class Persons extends _$Persons {
-  var _isLoadingNextPage = false;
   final _logger = Logger();
   var _loadCount = 0;
 
@@ -22,17 +21,19 @@ class Persons extends _$Persons {
   }
 
   Future<void> loadNextPage() async {
-    if (_isLoadingNextPage || !canLoadMore()) {
+    if (state.isLoading || !canLoadMore()) {
       return;
     }
-    _isLoadingNextPage = true;
-    final newPersons = await _loadPersons();
-    state = AsyncData([...state.value!, ...newPersons]);
-    _isLoadingNextPage = false;
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final newPersons = await _loadPersons();
+      return [...state.value!, ...newPersons];
+    });
   }
 
   Future<List<Person>> _loadPersons() async {
     _logger.i('Loading persons...');
+    await Future<void>.delayed(const Duration(milliseconds: 500));
     final response = await ref
         .read(httpClientProvider)
         .get(Uri.https('fakerapi.it', '/api/v1/persons', {'_quantity': '10'}));
@@ -46,5 +47,11 @@ class Persons extends _$Persons {
 
   bool canLoadMore() {
     return _loadCount < 4;
+  }
+
+  Future<void> refresh() async {
+    _loadCount = 0;
+    state = const AsyncData([]);
+    await loadNextPage();
   }
 }

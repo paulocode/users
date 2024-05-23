@@ -1,7 +1,11 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OverscrollIndicator extends StatefulWidget {
+import '../providers/persons.dart';
+import 'fetch_failed.dart';
+
+class OverscrollIndicator extends ConsumerStatefulWidget {
   const OverscrollIndicator({
     super.key,
     required void Function() loadMoreCallback,
@@ -13,14 +17,15 @@ class OverscrollIndicator extends StatefulWidget {
   final bool _canLoadMore;
 
   @override
-  State<OverscrollIndicator> createState() => _OverscrollIndicatorState();
+  ConsumerState<OverscrollIndicator> createState() =>
+      _OverscrollIndicatorState();
 }
 
-class _OverscrollIndicatorState extends State<OverscrollIndicator> {
-  bool _loading = false;
-
+class _OverscrollIndicatorState extends ConsumerState<OverscrollIndicator> {
   @override
   Widget build(BuildContext context) {
+    final personsAsync = ref.read(personsProvider);
+
     if (!widget._canLoadMore) {
       return Text(
         'No more data',
@@ -29,25 +34,25 @@ class _OverscrollIndicatorState extends State<OverscrollIndicator> {
       );
     }
 
-    if (_loading) {
+    if (personsAsync.isLoading) {
       return const Center(child: CircularProgressIndicator());
+    } else if (personsAsync.hasError) {
+      return SizedBox(
+        width: double.infinity,
+        child: FetchFailed(
+          retryCallback: widget._loadMoreCallback,
+        ),
+      );
     } else if (kIsWeb) {
       return ElevatedButton(
-        onPressed: _triggerLoading,
+        onPressed: widget._loadMoreCallback,
         child: const Text('Load More'),
       );
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _triggerLoading();
+        widget._loadMoreCallback();
       });
       return Container();
     }
-  }
-
-  void _triggerLoading() {
-    widget._loadMoreCallback();
-    setState(() {
-      _loading = true;
-    });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,9 +10,9 @@ import '../screens/user_screen.dart';
 import 'overscroll_indicator.dart';
 
 class UserList extends ConsumerStatefulWidget {
-  const UserList(List<Person> persons, {super.key}) : _persons = persons;
+  const UserList(List<Person>? persons, {super.key}) : _persons = persons;
 
-  final List<Person> _persons;
+  final List<Person>? _persons;
 
   @override
   ConsumerState<UserList> createState() => _UserListState();
@@ -27,7 +29,7 @@ class _UserListState extends ConsumerState<UserList> {
 
   @override
   Widget build(BuildContext context) {
-    final persons = widget._persons;
+    final persons = widget._persons ?? [];
     final listView = ListView.builder(
       controller: _scrollController,
       itemBuilder: (context, index) {
@@ -57,13 +59,13 @@ class _UserListState extends ConsumerState<UserList> {
           ),
         );
       },
-      itemCount: widget._persons.length + 1,
+      itemCount: persons.length + 1,
     );
 
     if (!kIsWeb) {
       return RefreshIndicator(
         onRefresh: () async {
-          ref.invalidate(personsProvider);
+          unawaited(ref.read(personsProvider.notifier).refresh());
         },
         child: listView,
       );
