@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:users/model/person.dart';
+import 'person.dart';
 part 'fakeapi_person_response.g.dart';
 
 @JsonSerializable()

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:users/widgets/refresh_fab.dart';
 
 import '../providers/persons.dart';
+import '../widgets/refresh_fab.dart';
 import '../widgets/user_list.dart';
 
 class HomePageScreen extends ConsumerWidget {
@@ -13,9 +13,8 @@ class HomePageScreen extends ConsumerWidget {
     final personsAsync = ref.watch(personsProvider);
     const loadingIndicator = Center(child: CircularProgressIndicator());
     final body = switch (personsAsync) {
-      AsyncData(:final value, :final isLoading) => !isLoading
-          ? UserList(value)
-          : loadingIndicator,
+      AsyncData(:final value, :final isLoading) =>
+        !isLoading ? UserList(value) : loadingIndicator,
       AsyncError() => const Text('Oops, something unexpected happened'),
       _ => loadingIndicator,
     };
