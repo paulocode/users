@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../model/person.dart';
 import '../providers/persons.dart';
 import '../screens/user_screen.dart';
+import 'avatar.dart';
 import 'overscroll_indicator.dart';
 
 class UserList extends ConsumerStatefulWidget {
@@ -54,8 +55,9 @@ class _UserListState extends ConsumerState<UserList> {
             );
           },
           child: ListTile(
-            leading: Hero(tag: person, child: const CircleAvatar()),
+            leading: Avatar(url: person.image, tag: person),
             title: Text('${person.firstname} ${person.lastname}'),
+            subtitle: Text(person.email ?? ''),
           ),
         );
       },

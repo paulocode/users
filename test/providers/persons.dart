@@ -112,7 +112,8 @@ void main() {
 
     final persons = await container.read(personsProvider.future);
 
-    expect(persons.length, 1);});
+    expect(persons.length, 1);
+  });
 }
 
 void _setClientResponse(MockClient client, List<Person> data) {
