@@ -5,17 +5,44 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../model/person.dart';
 import '../providers/persons.dart';
 import '../screens/user_screen.dart';
+import 'overscroll_indicator.dart';
 
-class UserList extends ConsumerWidget {
+class UserList extends ConsumerStatefulWidget {
   const UserList(List<Person> persons, {super.key}) : _persons = persons;
 
   final List<Person> _persons;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UserList> createState() => _UserListState();
+}
+
+class _UserListState extends ConsumerState<UserList> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final persons = widget._persons;
     final listView = ListView.builder(
+      controller: _scrollController,
       itemBuilder: (context, index) {
-        final person = _persons[index];
+        if (index == persons.length) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: OverscrollIndicator(
+              canLoadMore: ref.read(personsProvider.notifier).canLoadMore(),
+              loadMoreCallback: () {
+                ref.read(personsProvider.notifier).loadNextPage();
+              },
+            ),
+          );
+        }
+        final person = persons[index];
         return InkWell(
           onTap: () {
             Navigator.of(context).push(
@@ -30,7 +57,7 @@ class UserList extends ConsumerWidget {
           ),
         );
       },
-      itemCount: _persons.length,
+      itemCount: widget._persons.length + 1,
     );
 
     if (!kIsWeb) {

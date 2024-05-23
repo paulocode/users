@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'persons.dart';
+part of 'http.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$personsHash() => r'268d36fff0ac77b29b0f515a4a756af48df743ee';
+String _$httpClientHash() => r'ee5992436ccfa04cad4349173d374824239fea46';
 
-/// See also [Persons].
-@ProviderFor(Persons)
-final personsProvider = AsyncNotifierProvider<Persons, List<Person>>.internal(
-  Persons.new,
-  name: r'personsProvider',
+/// See also [httpClient].
+@ProviderFor(httpClient)
+final httpClientProvider = AutoDisposeProvider<http.Client>.internal(
+  httpClient,
+  name: r'httpClientProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$personsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$httpClientHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Persons = AsyncNotifier<List<Person>>;
+typedef HttpClientRef = AutoDisposeProviderRef<http.Client>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
