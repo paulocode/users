@@ -15,7 +15,9 @@ A users/persons list with data from Fakerapi
 https://github.com/paulocode/users/releases/tag/v1.0.0
 ### Web
 https://paulocode.github.io/users/
-
+### iOS
+Clone repository and run
+`flutter run --release`
 ## Screenshots
 
 ### Web
