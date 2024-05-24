@@ -11,9 +11,9 @@ import 'avatar.dart';
 import 'overscroll_indicator.dart';
 
 class UserList extends ConsumerStatefulWidget {
-  const UserList(List<Person>? persons, {super.key}) : _persons = persons;
+  const UserList(List<Person> persons, {super.key}) : _persons = persons;
 
-  final List<Person>? _persons;
+  final List<Person> _persons;
 
   @override
   ConsumerState<UserList> createState() => _UserListState();
@@ -30,7 +30,7 @@ class _UserListState extends ConsumerState<UserList> {
 
   @override
   Widget build(BuildContext context) {
-    final persons = widget._persons ?? [];
+    final persons = widget._persons;
     final listView = ListView.builder(
       controller: _scrollController,
       itemBuilder: (context, index) {
