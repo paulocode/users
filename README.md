@@ -8,6 +8,7 @@ A users/persons list with data from Fakerapi
 ## Known issues
 * Fakerapi returns wrong geo coordinates.
 * Fakerapi returns invalid person images.
+* Fakerapi serves http (not https) links which may fail to load in some configurations since I used an in-app browser for mobile.
 
 ## APK
 https://github.com/paulocode/users/releases/tag/v1.0.0
