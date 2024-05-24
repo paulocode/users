@@ -12,7 +12,7 @@ A users/persons list with data from Fakerapi
 
 ## Access
 ### Android (APK)
-https://github.com/paulocode/users/releases/tag/v1.0.0
+https://github.com/paulocode/users/releases
 ### Web
 https://paulocode.github.io/users/
 ### iOS
