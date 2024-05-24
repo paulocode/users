@@ -9,6 +9,9 @@ A users/persons list with data from Fakerapi
 * Fakerapi returns wrong geo coordinates.
 * Fakerapi returns invalid person images.
 
+## APK
+https://github.com/paulocode/users/releases/tag/v1.0.0
+
 ## Screenshots
 
 ### Web
