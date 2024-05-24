@@ -27,7 +27,7 @@ class Persons extends _$Persons {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final newPersons = await _loadPersons();
-      return [...state.value!, ...newPersons];
+      return [...state.value ?? [], ...newPersons];
     });
   }
 

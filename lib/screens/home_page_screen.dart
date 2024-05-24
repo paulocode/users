@@ -11,14 +11,14 @@ class HomePageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final personsAsync = ref.watch(personsProvider);
+    final persons = personsAsync.hasValue ? personsAsync.value : null;
     const loadingIndicator = Center(child: CircularProgressIndicator());
     final body = switch (personsAsync) {
-      AsyncData(:final value, :final isRefreshing) =>
-        isRefreshing ? loadingIndicator : UserList(value),
-      AsyncError(:final value, :final isRefreshing) =>
-        isRefreshing ? loadingIndicator : UserList(value),
-      AsyncLoading(:final value) =>
-        value == null ? loadingIndicator : UserList(value),
+      AsyncData(:final isRefreshing) =>
+        isRefreshing ? loadingIndicator : UserList(persons),
+      AsyncError(:final isRefreshing) =>
+        isRefreshing ? loadingIndicator : UserList(persons),
+      AsyncLoading() => persons == null ? loadingIndicator : UserList(persons),
       _ => loadingIndicator,
     };
     return Scaffold(

@@ -114,9 +114,31 @@ void main() {
 
     expect(persons.length, 1);
   });
+
+  test('previous error response must allow refetching', () async {
+    _setClientResponse(
+      client,
+      [],
+      code: 404,
+    );
+    await container.read(personsProvider.future);
+    _setClientResponse(
+      client,
+      [Person(id: 0, firstname: 'juan', lastname: 'cruz')],
+    );
+    await container.read(personsProvider.notifier).loadNextPage();
+
+    final persons = await container.read(personsProvider.future);
+
+    expect(persons.length, 1);
+  });
 }
 
-void _setClientResponse(MockClient client, List<Person> data) {
+void _setClientResponse(
+  MockClient client,
+  List<Person> data, {
+  int code = 200,
+}) {
   when(client.get(any)).thenAnswer(
     (_) => Future.value(
       http.Response(
@@ -125,7 +147,7 @@ void _setClientResponse(MockClient client, List<Person> data) {
             data: data,
           ).toJson(),
         ),
-        200,
+        code,
       ),
     ),
   );
