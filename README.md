@@ -10,8 +10,11 @@ A users/persons list with data from Fakerapi
 * Fakerapi returns invalid person images.
 * Fakerapi serves http (not https) links which may fail to load in some configurations since I used an in-app browser for mobile.
 
-## APK
+## Access
+### Android (APK)
 https://github.com/paulocode/users/releases/tag/v1.0.0
+### Web
+https://paulocode.github.io/users/
 
 ## Screenshots
 
