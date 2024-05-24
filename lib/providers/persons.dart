@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../constants.dart';
 import '../model/fakeapi_person_response.dart';
 import '../model/person.dart';
 import 'http.dart';
@@ -17,7 +18,7 @@ class Persons extends _$Persons {
   @override
   Future<List<Person>> build() async {
     _loadCount = 0;
-    return _loadPersons();
+    return _loadPersons(kInitialItemsPerFetch);
   }
 
   Future<void> loadNextPage() async {
@@ -26,19 +27,25 @@ class Persons extends _$Persons {
     }
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final newPersons = await _loadPersons();
+      final newPersons = await _loadPersons(kItemsPerFetch);
       return [...state.value ?? [], ...newPersons];
     });
   }
 
-  Future<List<Person>> _loadPersons() async {
+  Future<List<Person>> _loadPersons(int count) async {
     _logger.i('Loading persons...');
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    final response = await ref
-        .read(httpClientProvider)
-        .get(Uri.https('fakerapi.it', '/api/v1/persons', {'_quantity': '10'}));
-    _logger.i(response.request?.url.toString());
+
+    final uri = Uri.https(
+      kBaseFakerApiUrl,
+      kPersonsFakerApiPath,
+      {kQuantityFakerApiArg: count.toString()},
+    );
+    _logger.i(uri.toString());
+
+    final response = await ref.read(httpClientProvider).get(uri);
     _logger.i(response.body);
+
     final json = jsonDecode(response.body) as Map<String, dynamic>;
     _loadCount++;
     _logger.i('Loaded page $_loadCount');
@@ -46,7 +53,7 @@ class Persons extends _$Persons {
   }
 
   bool canLoadMore() {
-    return _loadCount < 4;
+    return _loadCount < kPagesLimit;
   }
 
   Future<void> refresh() async {
