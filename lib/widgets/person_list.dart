@@ -2,19 +2,19 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/post_bloc.dart'
-    show PostBloc, PostFetched, PostRefreshed, PostState;
-import '../screens/user_screen.dart';
+import '../bloc/person/person_bloc.dart'
+    show PersonBloc, PersonFetched, PersonRefreshed, PersonState;
+import '../screens/person_screen.dart';
 import 'avatar.dart';
 import 'overscroll_indicator.dart';
 
-class UserList extends StatefulWidget {
-  const UserList({super.key});
+class PersonList extends StatefulWidget {
+  const PersonList({super.key});
   @override
-  State<UserList> createState() => _UserListState();
+  State<PersonList> createState() => _PersonListState();
 }
 
-class _UserListState extends State<UserList> {
+class _PersonListState extends State<PersonList> {
   final _scrollController = ScrollController();
 
   @override
@@ -32,7 +32,7 @@ class _UserListState extends State<UserList> {
   }
 
   void _onScroll() {
-    if (_isBottom && !kIsWeb) context.read<PostBloc>().add(PostFetched());
+    if (_isBottom && !kIsWeb) context.read<PersonBloc>().add(PersonFetched());
   }
 
   bool get _isBottom {
@@ -44,9 +44,9 @@ class _UserListState extends State<UserList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
+    return BlocBuilder<PersonBloc, PersonState>(
       builder: (context, state) {
-        final persons = state.posts;
+        final persons = state.persons;
         final listView = ListView.builder(
           controller: _scrollController,
           itemCount: persons.length + 1,
@@ -58,7 +58,7 @@ class _UserListState extends State<UserList> {
                 child: OverscrollIndicator(
                   canLoadMore: !state.hasReachedMax,
                   loadMoreCallback: () {
-                    context.read<PostBloc>().add(PostFetched());
+                    context.read<PersonBloc>().add(PersonFetched());
                   },
                   isLoading: state.isLoading,
                   hasError: state.hasError,
@@ -74,7 +74,7 @@ class _UserListState extends State<UserList> {
                 );
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (context) => UserScreen(person: person),
+                    builder: (context) => PersonScreen(person: person),
                   ),
                 );
               },
@@ -90,7 +90,7 @@ class _UserListState extends State<UserList> {
         if (!kIsWeb) {
           return RefreshIndicator(
             onRefresh: () async {
-              context.read<PostBloc>().add(PostRefreshed());
+              context.read<PersonBloc>().add(PersonRefreshed());
             },
             child: listView,
           );

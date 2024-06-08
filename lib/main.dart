@@ -14,7 +14,7 @@ class UsersApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Users',
+      title: 'Persons',
       theme: theme,
       darkTheme: darkTheme,
       home: const HomePageScreen(),

@@ -1,14 +1,14 @@
-part of 'post_bloc.dart';
+part of 'person_bloc.dart';
 
-final class PostState extends Equatable {
-  const PostState({
-    this.posts = const <Person>[],
+final class PersonState extends Equatable {
+  const PersonState({
+    this.persons = const <Person>[],
     this.loadCount = 0,
     this.isLoading = false,
     this.hasError = false,
   });
 
-  final List<Person> posts;
+  final List<Person> persons;
   final int loadCount;
   final bool isLoading;
   final bool hasError;
@@ -17,14 +17,14 @@ final class PostState extends Equatable {
     return loadCount >= pagesLimit;
   }
 
-  PostState copyWith({
-    List<Person>? posts,
+  PersonState copyWith({
+    List<Person>? persons,
     int? loadCount,
     bool? isLoading,
     bool? hasError,
   }) {
-    return PostState(
-      posts: posts ?? this.posts,
+    return PersonState(
+      persons: persons ?? this.persons,
       loadCount: loadCount ?? this.loadCount,
       isLoading: isLoading ?? this.isLoading,
       hasError: hasError ?? this.hasError,
@@ -33,9 +33,9 @@ final class PostState extends Equatable {
 
   @override
   String toString() {
-    return '''PostState { loadCount: $loadCount, posts: ${posts.length}, isLoading: $isLoading, hasError: $hasError }''';
+    return '''PersonState { loadCount: $loadCount, persons: ${persons.length}, isLoading: $isLoading, hasError: $hasError }''';
   }
 
   @override
-  List<Object> get props => [posts, loadCount, isLoading, hasError];
+  List<Object> get props => [persons, loadCount, isLoading, hasError];
 }

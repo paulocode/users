@@ -5,25 +5,25 @@ import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
-import '../constants.dart';
-import '../model/fakeapi_person_response.dart';
-import '../model/person.dart';
+import '../../constants.dart';
+import '../../model/fakeapi_person_response.dart';
+import '../../model/person.dart';
 
-part 'post_event.dart';
-part 'post_state.dart';
+part 'person_event.dart';
+part 'person_state.dart';
 
-class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc({required this.httpClient}) : super(const PostState()) {
-    on<PostFetched>(_onPostFetched);
-    on<PostRefreshed>(_onPostRefreshed);
+class PersonBloc extends Bloc<PersonEvent, PersonState> {
+  PersonBloc({required this.httpClient}) : super(const PersonState()) {
+    on<PersonFetched>(_onPersonFetched);
+    on<PersonRefreshed>(_onPersonRefreshed);
   }
 
   final http.Client httpClient;
   final _logger = Logger();
 
-  Future<void> _onPostFetched(
-    PostFetched event,
-    Emitter<PostState> emit,
+  Future<void> _onPersonFetched(
+    PersonFetched event,
+    Emitter<PersonState> emit,
   ) async {
     if (state.hasReachedMax || state.isLoading) {
       return;
@@ -32,19 +32,18 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     await _loadPersons(itemsPerFetch, emit);
   }
 
-  Future<void> _onPostRefreshed(
-    PostRefreshed event,
-    Emitter<PostState> emit,
+  Future<void> _onPersonRefreshed(
+    PersonRefreshed event,
+    Emitter<PersonState> emit,
   ) async {
     if (state.isLoading) {
       return;
     }
-
-    emit(state.copyWith(posts: [], loadCount: 0));
+    emit(state.copyWith(persons: [], loadCount: 0));
     await _loadPersons(initialItemsPerFetch, emit);
   }
 
-  Future<void> _loadPersons(int count, Emitter<PostState> emit) async {
+  Future<void> _loadPersons(int count, Emitter<PersonState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, hasError: false));
       _logger.i('Loading persons...');
@@ -64,7 +63,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       _logger.i('Loaded page ${state.loadCount + 1}');
       emit(
         state.copyWith(
-          posts: [...state.posts, ...list],
+          persons: [...state.persons, ...list],
           loadCount: state.loadCount + 1,
           isLoading: false,
         ),

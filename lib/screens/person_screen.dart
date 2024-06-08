@@ -7,8 +7,8 @@ import '../widgets/avatar.dart';
 import '../widgets/person_info.dart';
 import '../widgets/tappable_text.dart';
 
-class UserScreen extends StatelessWidget {
-  const UserScreen({
+class PersonScreen extends StatelessWidget {
+  const PersonScreen({
     super.key,
     required Person person,
   }) : _person = person;

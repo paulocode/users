@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import '../bloc/post_bloc.dart';
+import '../bloc/person/person_bloc.dart';
+import '../widgets/person_list.dart';
 import '../widgets/refresh_fab.dart';
-import '../widgets/user_list.dart';
 
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
@@ -11,22 +11,23 @@ class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => PostBloc(httpClient: http.Client())..add(PostRefreshed()),
+      create: (_) =>
+          PersonBloc(httpClient: http.Client())..add(PersonRefreshed()),
       child: Scaffold(
         appBar: AppBar(
           leading: const Icon(Icons.person),
-          title: const Text('Users'),
+          title: const Text('Persons'),
         ),
-        floatingActionButton: BlocBuilder<PostBloc, PostState>(
+        floatingActionButton: BlocBuilder<PersonBloc, PersonState>(
           builder: (context, state) {
             return RefreshFab(
               refreshCallback: () {
-                context.read<PostBloc>().add(PostRefreshed());
+                context.read<PersonBloc>().add(PersonRefreshed());
               },
             );
           },
         ),
-        body: const UserList(),
+        body: const PersonList(),
       ),
     );
   }
