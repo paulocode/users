@@ -46,7 +46,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Future<void> _loadPersons(int count, Emitter<PostState> emit) async {
     try {
-      emit(state.copyWith(isLoading: true));
+      emit(state.copyWith(isLoading: true, hasError: false));
       _logger.i('Loading persons...');
       await Future<void>.delayed(const Duration(milliseconds: 500));
 
