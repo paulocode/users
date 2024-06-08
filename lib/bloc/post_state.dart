@@ -14,7 +14,7 @@ final class PostState extends Equatable {
   final bool hasError;
 
   bool get hasReachedMax {
-    return loadCount >= kPagesLimit;
+    return loadCount >= pagesLimit;
   }
 
   PostState copyWith({

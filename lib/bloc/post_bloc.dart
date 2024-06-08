@@ -29,7 +29,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       return;
     }
 
-    await _loadPersons(kItemsPerFetch, emit);
+    await _loadPersons(itemsPerFetch, emit);
   }
 
   Future<void> _onPostRefreshed(
@@ -41,7 +41,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
 
     emit(state.copyWith(posts: [], loadCount: 0));
-    await _loadPersons(kItemsPerFetch, emit);
+    await _loadPersons(itemsPerFetch, emit);
   }
 
   Future<void> _loadPersons(int count, Emitter<PostState> emit) async {
@@ -51,9 +51,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       await Future<void>.delayed(const Duration(milliseconds: 500));
 
       final uri = Uri.https(
-        kBaseFakerApiUrl,
-        kPersonsFakerApiPath,
-        {kQuantityFakerApiArg: count.toString()},
+        baseFakerApiUrl,
+        personsFakerApiPath,
+        {quantityFakerApiArg: count.toString()},
       );
       _logger.i(uri.toString());
       final response = await httpClient.get(uri);
