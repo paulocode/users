@@ -1,6 +1,6 @@
-# users
+# persons
 
-A users/persons list with data from Fakerapi
+A persons list with data from Fakerapi
 
 ## Implementation notes
 * Fakerapi returns a new set of persons per call. This is used to implement pagination. As a result, new users are shown every refresh.
