@@ -1,14 +1,12 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/persons.dart';
-
-class RefreshFab extends ConsumerWidget {
-  const RefreshFab({super.key});
+class RefreshFab extends StatelessWidget {
+  const RefreshFab({super.key, required this.refreshCallback});
+  final void Function() refreshCallback;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (!kIsWeb) {
       return Container();
     }
@@ -20,7 +18,7 @@ class RefreshFab extends ConsumerWidget {
           size: 70,
         ),
         onPressed: () async {
-          await ref.read(personsProvider.notifier).refresh();
+          refreshCallback();
         },
       ),
     );

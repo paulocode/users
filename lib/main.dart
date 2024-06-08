@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'screens/home_page_screen.dart';
 import 'theme.dart';
 
 void main() {
-  runApp(const ProviderScope(child: UsersApp()));
+  //Bloc.observer = const SimpleBlocObserver();
+  runApp(const UsersApp());
 }
 
 class UsersApp extends StatelessWidget {

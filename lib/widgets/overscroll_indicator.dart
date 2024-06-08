@@ -1,32 +1,30 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/persons.dart';
 import 'fetch_failed.dart';
 
-class OverscrollIndicator extends ConsumerStatefulWidget {
+class OverscrollIndicator extends StatefulWidget {
   const OverscrollIndicator({
     super.key,
-    required void Function() loadMoreCallback,
-    required bool canLoadMore,
-  })  : _loadMoreCallback = loadMoreCallback,
-        _canLoadMore = canLoadMore;
+    required this.loadMoreCallback,
+    required this.canLoadMore,
+    required this.isLoading,
+    required this.hasError,
+  });
 
-  final void Function() _loadMoreCallback;
-  final bool _canLoadMore;
+  final void Function() loadMoreCallback;
+  final bool canLoadMore;
+  final bool isLoading;
+  final bool hasError;
 
   @override
-  ConsumerState<OverscrollIndicator> createState() =>
-      _OverscrollIndicatorState();
+  State<OverscrollIndicator> createState() => _OverscrollIndicatorState();
 }
 
-class _OverscrollIndicatorState extends ConsumerState<OverscrollIndicator> {
+class _OverscrollIndicatorState extends State<OverscrollIndicator> {
   @override
   Widget build(BuildContext context) {
-    final personsAsync = ref.read(personsProvider);
-
-    if (!widget._canLoadMore) {
+    if (!widget.canLoadMore) {
       return Text(
         'No more data',
         textAlign: TextAlign.center,
@@ -34,24 +32,21 @@ class _OverscrollIndicatorState extends ConsumerState<OverscrollIndicator> {
       );
     }
 
-    if (personsAsync.isLoading) {
+    if (widget.isLoading) {
       return const Center(child: CircularProgressIndicator());
-    } else if (personsAsync.hasError) {
+    } else if (widget.hasError) {
       return SizedBox(
         width: double.infinity,
         child: FetchFailed(
-          retryCallback: widget._loadMoreCallback,
+          retryCallback: widget.loadMoreCallback,
         ),
       );
     } else if (kIsWeb) {
       return ElevatedButton(
-        onPressed: widget._loadMoreCallback,
+        onPressed: widget.loadMoreCallback,
         child: const Text('Load More'),
       );
     } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        widget._loadMoreCallback();
-      });
       return Container();
     }
   }
