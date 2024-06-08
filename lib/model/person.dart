@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'address.dart';
@@ -5,8 +6,8 @@ import 'address.dart';
 part 'person.g.dart';
 
 @JsonSerializable()
-class Person {
-  Person({
+class Person extends Equatable {
+  const Person({
     this.id,
     this.firstname,
     this.lastname,
@@ -33,4 +34,18 @@ class Person {
   final String? image;
 
   Map<String, dynamic> toJson() => _$PersonToJson(this);
+
+  @override
+  List<Object?> get props => [
+        id,
+        firstname,
+        lastname,
+        email,
+        phone,
+        birthday,
+        gender,
+        address,
+        website,
+        image,
+      ];
 }
