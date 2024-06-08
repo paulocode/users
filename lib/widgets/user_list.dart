@@ -10,7 +10,6 @@ import 'overscroll_indicator.dart';
 
 class UserList extends StatefulWidget {
   const UserList({super.key});
-  //
   @override
   State<UserList> createState() => _UserListState();
 }

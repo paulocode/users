@@ -41,7 +41,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
 
     emit(state.copyWith(posts: [], loadCount: 0));
-    await _loadPersons(itemsPerFetch, emit);
+    await _loadPersons(initialItemsPerFetch, emit);
   }
 
   Future<void> _loadPersons(int count, Emitter<PostState> emit) async {

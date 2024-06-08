@@ -11,7 +11,7 @@ class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => PostBloc(httpClient: http.Client())..add(PostFetched()),
+      create: (_) => PostBloc(httpClient: http.Client())..add(PostRefreshed()),
       child: Scaffold(
         appBar: AppBar(
           leading: const Icon(Icons.person),
